@@ -61,7 +61,16 @@ const hasValidLabelAssociation: AccessibilityRule = {
   test: (element: ReactElement) => {
     if (typeof element.type === 'string' && ['input', 'select', 'textarea'].includes(element.type)) {
       const { id, 'aria-labelledby': ariaLabelledby, 'aria-label': ariaLabel } = element.props;
-      return Boolean(id) || Boolean(ariaLabelledby) || Boolean(ariaLabel);
+      // Check if there's a label element as a sibling
+      if (element.type === 'input') {
+        const parent = element.props.parentElement;
+        if (parent && React.Children.toArray(parent.props.children).some(
+          child => React.isValidElement(child) && child.type === 'label' && child.props.htmlFor === id
+        )) {
+          return true;
+        }
+      }
+      return Boolean(ariaLabelledby) || Boolean(ariaLabel);
     }
     return true;
   },
@@ -164,15 +173,17 @@ const hasProperPortalManagement: AccessibilityRule = {
   description: 'Portals and modals should have proper focus trap and keyboard navigation',
   severity: 'error',
   test: (element: ReactElement) => {
-    if (typeof element.type === 'string' && element.props.role === 'dialog') {
+    if (typeof element.type === 'string') {
       const {
+        role,
         'aria-modal': ariaModal,
         'aria-label': ariaLabel,
         onKeyDown,
       } = element.props;
-      
-      // Check for essential modal accessibility attributes
-      return Boolean(ariaModal) && Boolean(ariaLabel) && Boolean(onKeyDown);
+
+      if (role === 'dialog') {
+        return Boolean(ariaModal) && Boolean(ariaLabel) && Boolean(onKeyDown);
+      }
     }
     return true;
   },

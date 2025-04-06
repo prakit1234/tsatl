@@ -86,6 +86,13 @@ export function testAccessibility(
     });
   }
 
+  // In strict mode, all warnings become errors
+  if (strictMode) {
+    violations.forEach(violation => {
+      violation.severity = 'error';
+    });
+  }
+
   return {
     passed: violations.length === 0,
     violations,

@@ -4,19 +4,40 @@
   "description": "Type-Safe Accessibility Testing Library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "accessibility",
     "testing",
     "typescript",
     "a11y",
-    "static-analysis"
+    "static-analysis",
+    "react",
+    "jsx",
+    "aria"
   ],
-  "author": "",
+  "author": "Kaii",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaii/tsatl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kaii/tsatl/issues"
+  },
+  "homepage": "https://github.com/kaii/tsatl#readme",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -29,7 +50,8 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.3.3"
   },
-  "dependencies": {
-    "react": "^18.2.0"
-  }
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "dependencies": {}
 } 

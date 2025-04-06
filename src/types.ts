@@ -73,6 +73,7 @@ export interface AccessibleDialogProps {
   'aria-modal': boolean;
   isOpen: boolean;
   onClose: () => void;
+  onKeyDown: (event: React.KeyboardEvent) => void;
 }
 
 export interface AccessibleLinkProps {
